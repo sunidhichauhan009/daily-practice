@@ -20,9 +20,9 @@ variable "subnet_name"{
   type        = map(string)
 
   default = {
-    app = "10.0.1.0/24"
-    db  = "10.0.2.0/24"
-    web = "10.0.3.0/24"
+    frontend = "10.0.1.0/24"
+    backend  = "10.0.2.0/24"
+    database = "10.0.3.0/24"
   }
 }
 variable "nsg" {
