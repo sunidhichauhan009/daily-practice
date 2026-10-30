@@ -34,3 +34,25 @@ module "app_nsg" {
   nsg_rg_name         = module.dev_rg.rg_name
   nsg_location        = module.dev_rg.location
 }
+
+
+# data "azurerm_subnet" "existing_subnet" {
+#   name                 = "data-subnet"
+#   virtual_network_name = module.vnet.vnet_name
+#   resource_group_name  = module.dev_rg.rg_name
+# }
+
+# data "azurerm_public_ip" "existing_pip" {
+#   name                = "data_pip"
+#   resource_group_name = module.dev_rg.rg_name
+# }
+
+module "app_nic" {
+  depends_on = [module.subnet, module.PIP]
+  source       = "./modules/nic"
+  nic_name     = "nic-app"
+  nic_rg_name  = module.dev_rg.rg_name
+  nic_location = module.dev_rg.location
+  subnet_id    = module.subnet.subnet_id
+  public_ip_id = module.PIP.pip_id
+}
