@@ -4,3 +4,7 @@ resource "azurerm_public_ip" "PIP" {
   location            = var.pip_location
   allocation_method   = "Static"
 }
+
+output "public_ip_id" {
+  value       = azurerm_public_ip.PIP.id
+}

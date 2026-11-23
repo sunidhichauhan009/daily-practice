@@ -4,3 +4,7 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = var.vnet_rg_name
   address_space       = var.vnet_address_space
 }
+
+output "vnet_name" {
+  value = azurerm_virtual_network.vnet.name
+}
