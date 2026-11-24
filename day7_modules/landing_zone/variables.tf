@@ -1,3 +1,23 @@
+variable "hub_rg_name" {
+  type    = string
+  default = "hub-network-rg"
+}
+
+variable "hub_location" {
+  type    = string
+  default = "Central India"
+}
+
+variable "hub_vnet_name" {
+  type    = string
+  default = "hub-vnet"
+}
+
+variable "hub_vnet_address_space" {
+  type    = list(string)
+  default = ["10.10.0.0/16"]
+}
+
 variable "additional_environments" {
   type = map(object({
     rg_name  = string
@@ -5,6 +25,14 @@ variable "additional_environments" {
   }))
 }
 
+
+variable "additional_vnets" {
+  type = map(object({
+    vnet_name     = string
+    address_space = list(string)
+  }))
+} 
+#---------------------------------------------------------
 variable "dev_rg_name" {
   type    = string
   default = "rg-module-learning"

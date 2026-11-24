@@ -63,6 +63,22 @@ resource "azurerm_network_interface_security_group_association" "nic_nsg" {
   network_interface_id      = module.app_nic.nic_id
   network_security_group_id = module.app_nsg.nsg_id
 }
+#-----------------------------------------------------
+module "hub_rg" {
+  source = "../modules/resource-group"
+
+  rg_name         = var.hub_rg_name
+  rg_location = var.hub_location
+}
+
+module "hub_vnet" {
+  source = "../modules/Virtual-network"
+
+  vnet_name          = var.hub_vnet_name
+  vnet_location      = module.hub_rg.rg_location
+  vnet_rg_name       = module.hub_rg.rg_name
+  vnet_address_space = var.hub_vnet_address_space
+}
 
 module "additional_resource_groups" {
   source   = "../modules/resource-group"
@@ -70,4 +86,14 @@ module "additional_resource_groups" {
 
   rg_name  = each.value.rg_name
   rg_location = each.value.location
+}
+
+module "additional_vnets" {
+  source   = "../modules/Virtual-network"
+  for_each = var.additional_vnets
+
+  vnet_name          = each.value.vnet_name
+  vnet_location      = module.additional_resource_groups[each.key].rg_location
+  vnet_rg_name       = module.additional_resource_groups[each.key].rg_name
+  vnet_address_space = each.value.address_space
 }
